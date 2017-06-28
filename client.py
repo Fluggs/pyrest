@@ -86,7 +86,10 @@ class Client:
             data = self.parse_request_data(data)
             data = data.encode("utf-8")
         request = urllib.request.Request(self.url(endpoint), data=data, method=method)
-        response = urllib.request.urlopen(request)
+        try:
+            response = urllib.request.urlopen(request)
+        except urllib.error.HTTPError as e:
+            response = e
         response = self.parse_response(response.read().decode("utf-8"))
         return response
 
